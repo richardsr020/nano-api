@@ -1,0 +1,60 @@
+@font-face {
+    font-family: diranista,sans-serif;
+    src: url(../public/libs/font/Diranista-Regular.otf);
+}
+.historique input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+  }
+:root{
+    --color-dark: #f4f4f4;
+    --dark-bg:#212121;
+    --p-color:#424252;
+    --color-main: #707070;
+    --title-font: roboto;
+    --linear: linear-gradient(45deg,#aa076b,#61045f);
+}
+*{
+    transition: background .2s;
+}
+html{
+    overflow: hidden;
+}
+
+::-webkit-scrollbar{
+    width: 0px;
+}
+::-webkit-scrollbar-thumb{
+    width: 5px;
+}
+::-webkit-scrollbar-track{
+    background: transparent;
+    width: 0px;
+}
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+input[type=submit],button:active{
+    transform: translateY(4px);
+    cursor: pointer;
+}
+/* DARK MODE SCRIPT  */
+.dark{
+    background: var(--dark-bg);
+    color: #f4f4f4;
+}
+.dark a{
+    color: var(--p-color);
+}
+.dark .conv-list .conv-item .left .textes h4{
+    color: var(--color-dark);
+}
+.dark .bx-sun{
+    color: #212121;
+}
+.dark .main .historique .top-box{
+    background: var(--linear) ;
+}
+/* DARK MODE SCRIPT  */

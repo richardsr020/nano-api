@@ -1,0 +1,42 @@
+<section class="signup-section">
+    <div class="signup-box">
+       <h1>sign Up</h1>
+       <form method="POST" action="api/index.php?action=sign-Up">
+          <input type="text" name ='phone'placeholder="phone" ><br>
+          <input type="password" name ='pass' placeholder="password"><br>
+          <input type="submit" name="submit">
+          <p>vous avez un compte?<span class="connectLink">se connecter</span></p>
+       </form>
+    </div>
+
+ </section>
+ 
+ <section class="login-section">
+    <div class="login-box">
+       <h1>log In</h1>
+       <form method="POST" action="api/index.php?action=log-In">
+          <input type="text" name ='phone' placeholder="phone" ><br>
+          <input type="password" name ='pass' placeholder="password" ><br>
+          <input type="submit" name="submit">
+          <p>pas de compte?<span class="signupLink">crée un compte</span></p>
+
+       </form>
+    </div>
+ </section>
+
+<script>
+    // script de changement des pages signup et login 
+    let singupPage = document.querySelector('.signup-section');
+    let loginPage = document.querySelector('.login-section');
+    let connectLink = document.querySelector('.connectLink');
+    let signupLink = document.querySelector('.signupLink');
+    singupPage.style.display = 'flex';
+    connectLink.addEventListener('click',() =>{
+    singupPage.style.display = 'none';
+    loginPage.style.display = 'flex';
+    })
+    signupLink.addEventListener('click',() =>{
+    loginPage.style.display = 'none';
+    singupPage.style.display = 'flex';
+    })
+</script>

@@ -1,0 +1,293 @@
+.chatPage{
+    width: 100%;
+    margin-top: -20px;
+}
+.chatPage nav{
+    /* position: fixed; */
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.chatPage nav h1{
+    font-family: var(--title-font);
+
+}
+.chatPage nav .menu{
+    margin: 20px 30px 0 20px;
+    
+}
+.chatPage nav .menu .bx-menu{
+    font-size: 2rem;
+    cursor: pointer;
+}
+.chatPage .menu .menu-box{
+    width: 200px;
+    height: 0;
+    position: absolute;
+    right: 0;
+    padding: 10px 0 10px 0;
+    user-select: none;
+    transition: .3s;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 10px 10px #00000036;
+    background-color: #fff;
+}
+.chatPage .menu .menu-box a{
+    height: 30px;
+    margin-top: 10px;
+    padding-left: 15px;
+}
+.chatPage .menu .menu-box .bx{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
+.chatPage .menu .menu-box.active-menu{
+    height: 300px;
+    opacity: 1;
+}
+button.new-contact{
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+    z-index: 100;
+  
+}
+button.new-contact .bx-plus{
+    padding: 10px;
+    background: var(--linear);
+    border: none;
+    border-radius: 50%;
+    outline: none;
+    font-weight: bold;
+    color: #f1f1f1;
+    font-size: 2rem;
+    cursor: pointer;
+}
+button.new-contact .bx-plus:hover{
+    transition: .2s;
+    transform: rotate(90deg);
+}
+/* .main  */
+header.main{
+    margin-top: 30px;
+    height: 95vh;
+    display: flex;
+    /* background-color: tan; */
+}
+/* historique de conversation  */
+.main .historique{
+    width: 30%;
+    height: 95vh;
+    /* background: #f1f1f1; */
+    box-shadow: 1px 10px 10px #00000036;
+
+}
+.main .historique .top-box{
+    display: flex;
+    height: 70px;
+    background: #f5f5f5;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+}
+.main .historique .top-box .left{
+    display: flex;
+}
+.main .historique .top-box .left .img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--linear);
+}
+.main .historique .top-box .left .img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.historique .search-box{
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:5px;
+}
+.historique .search-box input[type=search]{
+    width: 95%;
+    height: 40px;
+    padding: 5px 10px;
+    outline: none;
+    /* border: none; */
+    background-color: transparent;
+    border-bottom: 2px solid #aa076b;
+}
+.historique .search-box input[type=search]:focus{
+    transition: border .2s;
+    background: transparent;
+    border: 2px solid #aa076b;
+}
+.historique .search-box label{
+    position: absolute;
+    right: 10px;
+    top: 2px;
+}
+/* BOITES DES CONVESATIONS STYLISEE EN GROUPE ET SEUL  */
+.conv-list{
+    height: 80vh;
+    width: 95%;
+    /* background: rgb(220, 219, 219); */
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+.conv-list .conv-item{
+    height: 60px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+}
+.conv-list .conv-item .left{
+    display: flex;
+    align-items: center;
+}
+.conv-list .conv-item .left .img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--linear);
+}
+.conv-list .conv-item .left .img img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.conv-list .conv-item .left .textes{
+    height: 100%;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+.conv-list .conv-item .left .textes h4{
+    font-weight: 550;
+    text-transform: capitalize;
+    color: var(--p-color);
+}
+.conv-list .conv-item .left .textes p{
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    overflow-y: hidden;
+    color: var(--color-main);
+}
+.conv-list .conv-item .right h5{
+    font-weight: 550;
+    color: var(--color-main);
+}
+.conv-list .conv-item .right p{
+    width: 20px;
+   font-size: 12px;
+    background: var(--linear);
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 600;
+    color: #f1f1f1;
+    margin-left: 20px;
+}
+/* BOITES DES CONVESATIONS STYLISEE EN GROUPE ET SEUL  */
+/* historique de conversation  */
+
+/* SCRIPT DE LA SECTION FRERE CHAT BOX  */
+header.main .chat-box{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+header.main .chat-box form{
+    width: 55%;
+    position: absolute;
+    bottom: 10px;
+}
+header.main .chat-box form input{
+    height: 40px;
+    width: 100%;
+    height: 40px;
+    padding: 5px 10px;
+    outline: none;
+    /* border: none; */
+    background-color: transparent;
+    border-bottom: 2px solid #aa076b;
+}
+header.main .chat-box form label{
+    position: absolute;
+    right: 10px;
+    font-size: 2rem;
+    cursor: pointer;
+    transform: rotate(-10deg);
+}
+header.main .chat-box form label:hover{
+    translate: 3px;
+}
+/* SCRIPT DE LA SECTION FRERE CHAT BOX  */
+/* POP-UPS SCRIPTS  */
+.historique-pop{
+    top: 110px;
+    left: 300px;
+    height: 0;
+    width: 150px;
+    position: absolute;
+    padding: 10px;
+    user-select: none;
+    transition: .3s;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 10px 10px #00000036;
+    background-color: #fff;
+}
+.historique-pop a{
+    margin-top: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+.historique-pop.active-pop{
+    transition: height .3s;
+    height: 150px;
+    opacity: 1;
+}
+/* POP-UPS SCRIPTS  */
+
+
+
+
+
+
+
+
+
+/* responsive  */
+@media screen and (max-width:850px) {
+    .main .historique{
+        width: 40%;
+    }
+    .main .historique .top-box{
+        height: 50px;
+    }
+    .historique-pop{
+    left: 150px;
+    }
+}
+/* responsive  */
+/* .main  */
+ 
