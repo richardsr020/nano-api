@@ -40,7 +40,7 @@ class Rout{
                    $_SESSION['userprofile'] = $userdata[0]['profile'];
                    $_SESSION['usermail'] = $userdata[0]['mail'];
 
-                   header("location:https://nano-api.000webhostapp.com/index.php");
+                   header("location:localhost/nano-api/index.php");
   
                 }else{
                    unset($userdata);
@@ -91,16 +91,24 @@ class Rout{
         header("location:".$logInLink);
     }
     public static function sendFile(){
-        if(isset($_FILES) && $_FILES['file']['error'] != 0)
-        {
-            $file = new File($_FILES,$_GET['fileType'], $_GET['destId']);
+        if(isset($_FILES) && $_FILES['file']['error'] == 0)
+        {    
+            $file = new File($_FILES,"piece",(int)$_GET["chat"]);
             $file->upload();
+            // print_r((int)$_GET["chat"]);
         }
 
     }
-    public static function fillProfile(){
-        Rout::sendFile();
-        
+    
+
+    public static function fillProfileInfo($name, $mail,$id){
+        $profile= new User();
+        $profile->completData($name, $mail, $id);
+        if(isset($_FILES) && $_FILES['file']['error'] == 0)
+        {    
+            $file = new File($_FILES,"profile", (int)$_SESSION['id']);
+            $file->upload();
+        }
     }
     public static function msgSend(){
             

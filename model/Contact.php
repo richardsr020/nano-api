@@ -56,8 +56,8 @@ class Contact extends Model{
     }
     public function getAll($id){
         $this->connect(); 
-        $ps = $this->pdo->prepare("SELECT second FROM contact WHERE first =?");
-        $ps->execute([$id]);
+        $ps = $this->pdo->prepare("SELECT second FROM contact WHERE first=? OR second=?");
+        $ps->execute([$id,$id]);
         $idlist = $ps->fetchAll();
         $contactsList = [];
         $i = 0;

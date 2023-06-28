@@ -15,15 +15,33 @@
 
 
     require "model/Router.php";
-
-    //In this array we get the list of freind to print in contact sidBar 
     
 
+  
+    /*Here we verify if isset a global FILES  to fille user profile 
+    with every informations in FILES and Form data*/
+    if(isset($_FILES)){
+      
+          if(isset($_POST['name']) && isset($_POST['mail'])){
+            if(!empty($_POST['name']) && !empty($_POST['mail'])){
+              extract($_POST);
+                Rout::fillProfileInfo($name, $mail, $_SESSION['id']);
+                unset($_FILES);
+            }
+          }
+
+          if(isset($_POST['submitPiece'])){
+            Rout::sendFile();
+
+          }
+
+        
+      
+
+    } 
+      //In this array we get the list of freind to print in contact sidBar
     $initContacts = Rout::getFreinds();
     
-
-
-
     /*
 
       Here we get informations on the one wich talk we us
@@ -40,7 +58,7 @@
 
           $privatChat = Rout::getPrivateChatWith((int)$_GET['chat']);
 
-          // print_r($privatChat);
+         
 
 
 
@@ -1455,8 +1473,49 @@
   outline: none;
 
 }
+      /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  
+}
 
-</style></head><body>
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  border-radius:20px;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+</style>
+
+</head><body>
 
 <!-- 
 
@@ -1483,6 +1542,25 @@ Website: http://emilcarlsson.se/
 
 
 -->
+
+<!-- The Modal d'envoi de pieces jointes -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form method="POST" action="index.php?chat=<?=(isset($_GET['chat']))? $_GET['chat']:"";?>" enctype="multipart/form-data">
+   
+         <label for="file">joindre un fichier</label>
+         <input type="file" id="file" name="file">
+      
+      
+         <button type="submit" name="submitPiece">Joindre</button>
+      
+    </form>
+  </div>
+
+</div>
 
 
 
@@ -1551,7 +1629,7 @@ Website: http://emilcarlsson.se/
 
 
         <?php
-
+        /*Affichage de la liste de contact de la personne ou la session ouverte*/
               
               if(!empty($initContacts)){
                 $i=0;
@@ -1625,7 +1703,7 @@ Website: http://emilcarlsson.se/
 
       <div class="contactPhoto">
 
-        <img src="model/upload/profiles/<?=$contactInfos['profile'];?>" alt="photo"/>
+        <img src="model/upload/profiles/<?=$contactInfos['profile'];?>" alt=""/>
 
       </div>
 
@@ -1646,36 +1724,49 @@ Website: http://emilcarlsson.se/
 			</div>
 
 		</div>
+    <?php
+    // Affichage de messages d'uneconversation avec un contact
+      if(!empty($_SESSION['username']) OR !empty($_SESSION['userprofile']) && !empty('usermail')){
+        ?>
+            <div class="messages">
 
-		<div class="messages">
+              <ul>
 
-			<ul>
+              <?php
 
-        <?php
+                if(isset($privatChat) && !empty($privatChat)){
 
-            if(isset($privatChat) && !empty($privatChat)){
+                  $i=0;
 
-              $i=0;
+                  $sent = "color:#ffff; background-color:#09aa5c; border-radius: 30px";
+                  $replies = "color:#ffff; background-color:#a64dde;border-radius: 30px;";
+                  $flexStart = "display: flex; justify-content: flex-start";
+                  $flexEnd = "display: flex; justify-content: flex-end";
+                  $joinedPiece = "overflow: hidden;";
 
-              $sent = "sent";
 
-              $replies = "replies";
+                  while($i< count($privatChat)){
 
-              while($i< count($privatChat)){
+                      ?>
 
-                ?>
 
-                    <li class="<?php($privatChat[$i]['id'] == $_SESSION['id'])?$sent:$replies;?>">
+                    <li style="<?=($privatChat[$i]['id_author'] == $_SESSION['id'])?$flexStart:$flexEnd;?>">
 
                       <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
 
-                        <p><?=$privatChat[$i]['text'];?></p>
+                        <div style="<?=($privatChat[$i]['id_author'] == $_SESSION['id'])?$sent:$replies;?>">
+                          <p><?=$privatChat[$i]['text'];?></p>
+                          <div style="">
+                            <img src="<?= File::getLink($privatChat[$i]['joinedPiece'])?>">
+                          </div>
+                          <p style="<?=$flexEnd?>"><?=$privatChat[$i]['date'];?></p>
+                        </div>
 
                     </li>
 
 
 
-                <?php
+                      <?php
 
                 $i++;
 
@@ -1687,83 +1778,64 @@ Website: http://emilcarlsson.se/
 
                 <?php
                 }
+                ?>
+
+       
+
+              </ul>
+
+            </div>
+
+
+
+        <?php
+            }else{
+
+              ?>
+              <!-- ******************************* completing profile data *************************** -->
+                <div class="fillProfile">
+                  <br>
+                  <br>
+                  <p>Veillez auprealable choisir votre image de profile et clicker sur 
+                  <strong>valider</strong> avant de completer les information manquants et à la fin, clickez sur <strong>Done</strong>  </p>
+
+                  <form method="POST" action="index.php" enctype="multipart/form-data">
+                      <div>
+                        <label for="file">Photo avatar</label>
+                        <input type="file" id="file" name="file"><br><br>
+                        <input type="text" name="name" placeholder="username"><br>
+                        <input type="mail" name="mail" placeholder="mail"><br><br>
+                      </div>
+                      <div>
+                        <button type="submit" name="submitProfileForm">valid</button><br><br>
+                      </div>
+                  </form>
+                  
+                  <br>
+                  <br>
+                  
+                  
+
+                </div>
+
+
+
+              <?php
+            }
+
         ?>
 
-				
-
-				<!-- <li class="replies">
-
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-
-					<p>When you're backed against the wall, break the god damn thing down.</p>
-
-				</li>
-
-				<li class="replies">
-
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-
-					<p>Excuses don't win championships.</p>
-
-				</li>
-
-				<li class="sent">
-
-					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-
-					<p>Oh yeah, did Michael Jordan tell you that?</p>
-
-				</li>
-
-				<li class="replies">
-
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-
-					<p>No, I told him that.</p>
-
-				</li>
-
-				<li class="replies">
-
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-
-					<p>What are your choices when someone puts a gun to your head?</p>
-
-				</li>
-
-				<li class="sent">
-
-					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-
-					<p>What are you talking about? You do what they say or they shoot you.</p>
-
-				</li>
-
-				<li class="replies">
-
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-
-					<p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-
-				</li> -->
-
-			</ul>
-
-		</div>
-
+		
 		<div class="message-input">
 
 			<div class="wrap">
 
             <form method="POST" action="index.php?chat=<?=$contactInfos['id'];?>&idDest=<?=$contactInfos['id'];?>">
-
-          
-
               <input type="text" class="form-control" id="textMsg" name="textMsg" placeholder="Write a massage....">
-
               <button type="submit" class="btn btn-primary">Submit</button>
-
             </form>
+            <!-- Trigger/Open The Modal -->
+            <button type="btn" id="myBtn">Piece</button>
 
 			</div>
 
@@ -1888,5 +1960,33 @@ $(window).on('keydown', function(e) {
 //# sourceURL=pen.js
 
 </script>
+<script>
+      
+      // Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+   </script>
 
 </body></html>

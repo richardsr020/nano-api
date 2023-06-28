@@ -125,15 +125,17 @@ class User extends Model{
             }
         }
     }
+
+     public function completData ($name, $mail,$id)
+
+     { 
+            $this->connect();
+            $ps = $this->pdo->prepare("UPDATE user SET name =?, mail=? WHERE id =?");
+            $ps->execute([$name, $mail, $id]);
+
+     }
     
 }
-// $richar = new User();
-// $form = ['beni','mils','sunny'];
 
-//  if($richar->validUser($form)){
-//    echo 'UserValid';
-// }else{
-//     echo 'Not valid';
-// }
 
 ?>

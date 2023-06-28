@@ -1,8 +1,8 @@
 <?php 
     
     class File extends Model{
-        private $piecesDir = '../model/upload/pieces/';
-        private $profileDir='../model/upload/profiles/';
+        private $piecesDir = 'model/upload/pieces/';
+        private $profileDir='model/upload/profiles/';
         public $name; // the file name sa an example : myImage.png
         public $file; // the temp_name directory
         public $maxSize = 10000000; // the max size wich can beuploaded
@@ -45,14 +45,18 @@
              * here is insersion of file in pices table, 
              * after that theire is a private function called into the 
              * the current function which create a contact among the author
-             * of message and destinator it the function <<createContact>>
+             * of message and destinator it's the function <<createContact>>
         */
 
         public function send(){
     
             $this->connect();
             $newMarkup = $this->makMarkup();
+            /*On insere la pieces jointe dans la table de pieces puis dans la table de messages */
             $ps = $this->pdo->prepare("INSERT INTO piece(name,id_author,id_destination,markup,is_read) VALUES(?,?,?,?,?)");
+            $ps->execute([$this->newFileName,$this->authorId,$this->destId,$newMarkup,0]);
+
+            $ps = $this->pdo->prepare("INSERT INTO chat(joinedPiece,id_author,id_destination,markup,is_read) VALUES(?,?,?,?,?)");
             $ps->execute([$this->newFileName,$this->authorId,$this->destId,$newMarkup,0]);
             //We verify before if this the contact do not exist 
             /**
@@ -92,7 +96,8 @@
                         
                         if(move_uploaded_file($this->file, $this->piecesDir.$this->newFileName)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
                         {
-                        echo 'Upload effectué avec succès !';
+                        echo 'Upload  de la piece effectué avec succès !';
+                        $this->send();
                         }
                         else //else( the fonction put an error into error property)..
                         
@@ -116,10 +121,7 @@
                         }
 
                     }
-                    if(empty($this->error) && $this->destId!=$_SESSION['id']){
-                        $this->send();
-                        
-                    }
+                  
               
                 }else {
                     $this->error = 'large Size';
@@ -140,10 +142,10 @@
          */
         public static function getLink($fileName){
             if(strpos($fileName,'profile',0) === 0){
-                   return 'upload/profile/'.$fileName;
+                   return 'model/upload/profile/'.$fileName;
             }
             elseif(strpos($fileName,'piece',0) === 0){
-                return 'upload/pieces/'.$fileName;
+                return 'model/upload/pieces/'.$fileName;
             }
         }
 
